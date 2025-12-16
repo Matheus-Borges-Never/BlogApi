@@ -1,0 +1,455 @@
+{
+  "info": {
+    "name": "Blog API - CRUD Completo",
+    "description": "Collection completa para testar a API de Blog com todos os endpoints CRUD",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Listar Todos os Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Retorna lista de todos os posts com contagem de comentários"
+          }
+        },
+        {
+          "name": "Criar Novo Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Novo Post via Postman\",\n  \"conteudo\": \"Este é o conteúdo do meu novo post criado via API.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Cria um novo post de blog"
+          }
+        },
+        {
+          "name": "Obter Post por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1"]
+            },
+            "description": "Retorna um post específico com todos os comentários"
+          }
+        },
+        {
+          "name": "Atualizar Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Post Atualizado\",\n  \"conteudo\": \"Conteúdo foi atualizado com sucesso!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1"]
+            },
+            "description": "Atualiza um post existente"
+          }
+        },
+        {
+          "name": "Deletar Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1"]
+            },
+            "description": "Deleta um post e todos os seus comentários (cascade)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comentários",
+      "item": [
+        {
+          "name": "Adicionar Comentário ao Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autor\": \"João da Silva\",\n  \"texto\": \"Excelente post! Muito informativo.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1", "comments"]
+            },
+            "description": "Adiciona um novo comentário a um post específico"
+          }
+        },
+        {
+          "name": "Obter Comentário Específico",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1", "comments", "1"]
+            },
+            "description": "Retorna um comentário específico de um post"
+          }
+        },
+        {
+          "name": "Atualizar Comentário",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autor\": \"João da Silva\",\n  \"texto\": \"Comentário atualizado com informações adicionais!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1", "comments", "1"]
+            },
+            "description": "Atualiza um comentário existente"
+          }
+        },
+        {
+          "name": "Deletar Comentário",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1", "comments", "1"]
+            },
+            "description": "Deleta um comentário específico"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Testes de Validação",
+      "item": [
+        {
+          "name": "Criar Post Sem Título (Deve Falhar)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"\",\n  \"conteudo\": \"Teste de validação\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Testa validação - deve retornar 400 Bad Request"
+          }
+        },
+        {
+          "name": "Buscar Post Inexistente (Deve Retornar 404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "999"]
+            },
+            "description": "Testa 404 - deve retornar Not Found"
+          }
+        },
+        {
+          "name": "Atualizar Post Inexistente (Deve Retornar 404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Teste\",\n  \"conteudo\": \"Conteúdo de teste\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "999"]
+            },
+            "description": "Testa atualização de post inexistente - deve retornar 404"
+          }
+        },
+        {
+          "name": "Deletar Post Inexistente (Deve Retornar 404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "999"]
+            },
+            "description": "Testa deleção de post inexistente - deve retornar 404"
+          }
+        },
+        {
+          "name": "Comentar em Post Inexistente (Deve Retornar 404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autor\": \"Teste\",\n  \"texto\": \"Comentário de teste\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/999/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "999", "comments"]
+            },
+            "description": "Testa validação - deve retornar 404 Not Found"
+          }
+        },
+        {
+          "name": "Atualizar Comentário Inexistente (Deve Retornar 404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autor\": \"Teste\",\n  \"texto\": \"Comentário de teste\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1/comments/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1", "comments", "999"]
+            },
+            "description": "Testa atualização de comentário inexistente - deve retornar 404"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fluxo Completo (Teste End-to-End)",
+      "item": [
+        {
+          "name": "1. Criar Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"postId\", jsonData.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Post de Teste E2E\",\n  \"conteudo\": \"Este post será usado para teste completo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            }
+          }
+        },
+        {
+          "name": "2. Adicionar Comentário",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"commentId\", jsonData.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autor\": \"Testador\",\n  \"texto\": \"Primeiro comentário\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            }
+          }
+        },
+        {
+          "name": "3. Atualizar Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Post Atualizado E2E\",\n  \"conteudo\": \"Conteúdo foi modificado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Atualizar Comentário",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autor\": \"Testador\",\n  \"texto\": \"Comentário atualizado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments/{{commentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments", "{{commentId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Verificar Post Atualizado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "6. Deletar Comentário",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments/{{commentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments", "{{commentId}}"]
+            }
+          }
+        },
+        {
+          "name": "7. Deletar Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7123",
+      "type": "string"
+    }
+  ]
+}
