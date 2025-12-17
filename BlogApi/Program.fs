@@ -7,6 +7,9 @@ open Microsoft.Extensions.Hosting
 open Microsoft.EntityFrameworkCore
 open BlogApi.Data
 
+type Program() =
+    class end
+
 module Program =
     let exitCode = 0
 

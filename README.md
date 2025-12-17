@@ -3,6 +3,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![F#](https://img.shields.io/badge/F%23-10.0-378BBA?logo=fsharp)](https://fsharp.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-49%20passing-brightgreen)](BlogApi.Tests)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 API RESTful desenvolvida em **.Net** para gerenciamento de posts de blog e comentários.
@@ -16,8 +17,9 @@ API RESTful desenvolvida em **.Net** para gerenciamento de posts de blog e comen
 - [Como Executar](#-como-executar-o-projeto)
 - [Endpoints da API](#-endpoints-da-api)
 - [Testes](#-testando-a-api)
-- [Banco de Dados](#?-banco-de-dados)
-- [Arquitetura](#?-arquitetura-do-projeto)
+- [Testes Unitários](#-testes-unitarios)
+- [Banco de Dados](#-banco-de-dados)
+- [Arquitetura](#-arquitetura-do-projeto)
 - [Funcionalidades](#-funcionalidades-implementadas)
 
 ---
@@ -29,6 +31,7 @@ API RESTful desenvolvida em **.Net** para gerenciamento de posts de blog e comen
 - **Entity Framework Core 10** - ORM
 - **SQLite** - Banco de dados (arquivo local)
 - **Swagger/OpenAPI** - Documentação interativa da API
+- **XUnit + FsUnit** - Framework de testes
 
 ## Pré-requisitos
 
@@ -36,8 +39,6 @@ API RESTful desenvolvida em **.Net** para gerenciamento de posts de blog e comen
 - Qualquer editor de código (Visual Studio, VS Code, Rider)
 
 ## Como Executar o Projeto
-
-> **Atalho:** Veja o [**QUICKSTART.md**](QUICKSTART.md) para começar em 2 minutos!
 
 ### 1. Clone o repositório
 ```bash
@@ -130,7 +131,7 @@ GET /api/posts/1
 }
 ```
 
-#### 4. Atualizar um post novo
+#### 4. Atualizar um post
 ```http
 PUT /api/posts/1
 Content-Type: application/json
@@ -186,7 +187,7 @@ Content-Type: application/json
 }
 ```
 
-#### 7. Obter comentário específico novo
+#### 7. Obter comentário específico
 ```http
 GET /api/posts/1/comments/2
 ```
@@ -201,7 +202,7 @@ GET /api/posts/1/comments/2
 }
 ```
 
-#### 8. Atualizar um comentário novo
+#### 8. Atualizar um comentário
 ```http
 PUT /api/posts/1/comments/2
 Content-Type: application/json
@@ -222,7 +223,7 @@ Content-Type: application/json
 }
 ```
 
-#### 9. Deletar um comentário novo
+#### 9. Deletar um comentário
 ```http
 DELETE /api/posts/1/comments/2
 ```
@@ -231,7 +232,7 @@ DELETE /api/posts/1/comments/2
 
 ---
 
-### ?? Resumo dos Endpoints
+### Resumo dos Endpoints
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
@@ -247,7 +248,7 @@ DELETE /api/posts/1/comments/2
 
 ## Testando a API
 
-###  Opção 1: Swagger UI (Recomendado)
+### Opção 1: Swagger UI (Recomendado)
 1. Execute o projeto
 2. Acesse https://localhost:XXXX/swagger
 3. Teste todos os endpoints diretamente pelo navegador
@@ -306,6 +307,69 @@ Importe o arquivo `BlogApi.postman_collection.json` incluído no repositório.
 
 ---
 
+## ?? Testes Unitários
+
+O projeto inclui **49 testes automatizados** cobrindo toda a funcionalidade da API.
+
+### Executar os Testes
+
+```bash
+# Executar todos os testes
+cd BlogApi.Tests
+dotnet test
+
+# Executar com detalhes
+dotnet test --verbosity detailed
+
+# Apenas testes unitários
+dotnet test --filter "FullyQualifiedName~UnitTests"
+
+# Apenas testes de integração
+dotnet test --filter "FullyQualifiedName~IntegrationTests"
+```
+
+### Cobertura de Testes
+
+| Categoria | Quantidade | Status |
+|-----------|------------|--------|
+| **Testes Unitários** | 15 | ? |
+| **Testes de Validação** | 15 | ? |
+| **Testes de Integração (Posts)** | 9 | ? |
+| **Testes de Integração (Comentários)** | 10 | ? |
+| **TOTAL** | **49 testes** | ? |
+
+### O que é testado?
+
+#### ? Testes Unitários
+- Controller de posts (GET, POST, PUT, DELETE)
+- Controller de comentários (GET, POST, PUT, DELETE)
+- Cascade delete (deletar post remove comentários)
+- Retorno de status codes corretos (200, 201, 204, 404)
+
+#### ? Testes de Validação
+- Validação de campos obrigatórios
+- Validação de tamanho mínimo e máximo
+- Validação de DTOs (Create e Update)
+
+#### ? Testes de Integração
+- Requisições HTTP reais para todos os endpoints
+- CRUD completo end-to-end
+- Validação de status codes
+- Serialização/deserialização JSON
+- Cascade delete em cenários reais
+
+### Tecnologias de Teste
+
+- **XUnit** - Framework de testes
+- **FsUnit** - Assertions em F# idiomático
+- **Microsoft.AspNetCore.Mvc.Testing** - Testes de integração
+- **Entity Framework InMemory** - Banco em memória
+- **FluentAssertions** - Assertions fluentes
+
+> ?? [Documentação completa dos testes](BlogApi.Tests/README.md)
+
+---
+
 ## Banco de Dados
 
 ### SQLite - Por que essa escolha?
@@ -333,17 +397,28 @@ Use ferramentas como:
 
 ```
 BlogApi/
- Controllers/
-?    PostsController.fs      # Endpoints da API (CRUD completo)
- Data/
-?    BlogDbContext.fs        # Contexto do EF Core
- DTOs/
-?    BlogPostDtos.fs         # Data Transfer Objects
- Models/
-?    BlogPost.fs             # Entidades do domínio
- Program.fs                  # Configuração da aplicação
- BlogApi.fsproj              # Arquivo do projeto
- blogapi.db                  # Banco SQLite (gerado)
+??? Controllers/
+?   ??? PostsController.fs      # Endpoints da API (CRUD completo)
+??? Data/
+?   ??? BlogDbContext.fs        # Contexto do EF Core
+??? DTOs/
+?   ??? BlogPostDtos.fs         # Data Transfer Objects
+??? Models/
+?   ??? BlogPost.fs             # Entidades do domínio
+??? Program.fs                  # Configuração da aplicação
+??? BlogApi.fsproj              # Arquivo do projeto
+??? blogapi.db                  # Banco SQLite (gerado)
+
+BlogApi.Tests/
+??? Helpers/
+?   ??? TestDbContextFactory.fs # Factory para testes
+??? UnitTests/
+?   ??? PostsControllerTests.fs # Testes do controller
+?   ??? ValidationTests.fs      # Testes de validação
+??? IntegrationTests/
+?   ??? PostsApiTests.fs        # Testes end-to-end posts
+?   ??? CommentsApiTests.fs     # Testes end-to-end comentários
+??? BlogApi.Tests.fsproj        # Projeto de testes
 ```
 
 **Padrões implementados:**
@@ -351,11 +426,13 @@ BlogApi/
 - Repository Pattern (via EF Core)
 - DTO Pattern
 - Dependency Injection
--  Async/Await
+- Async/Await
 - CRUD Completo
+- Test-Driven Development (TDD)
 
 ## Funcionalidades Implementadas
 
+### API
 - Modelo de dados BlogPost e Comment
 - Relacionamento one-to-many entre Post e Comments
 - GET /api/posts - Lista posts com contagem de comentários
@@ -377,6 +454,9 @@ BlogApi/
 - ? Código limpo e organizado
 - ? Async/await para operações assíncronas
 - ? RESTful seguindo convenções HTTP
+- ? **49 testes automatizados** ??
+- ? Testes unitários e de integração
+- ? 100% dos endpoints testados
 
 ---
 
@@ -388,6 +468,8 @@ BlogApi/
 - **Programação funcional** em F# com tipos imutáveis
 - **API RESTful** seguindo convenções HTTP
 - **CRUD Completo** para posts e comentários
+- **Testes Automatizados** - 49 testes cobrindo toda a API
+- **Test Coverage** - Testes unitários e de integração
 
 ---
 
@@ -395,7 +477,7 @@ BlogApi/
 
 Desenvolvido por [Matheus Borges Never](https://github.com/Matheus-Borges-Never)
 
-## ?? Licença
+## Licença
 
 Este projeto é de código aberto.
 
@@ -403,11 +485,12 @@ Este projeto é de código aberto.
 
 <div align="center">
 
-**Feito com em .NET**
+**Feito com ?? em .NET**
 
+**49 testes passando! ?**
 
-[Rodar Testes](test-api.ps1)
+[?? Ver Testes](BlogApi.Tests/README.md) | [Rodar Testes](test-api.ps1)
 
-[Voltar ao topo](#blog-api---desafio-de-programação)
+[Voltar ao topo](#blog-api)
 
 </div>
